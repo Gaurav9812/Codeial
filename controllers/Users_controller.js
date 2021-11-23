@@ -6,20 +6,33 @@ module.exports.home=function(req,res)
 }
 module.exports.profile=function(req,res)
 {
-    res.end('<h1> This is Users profile page</h1>');
+   return  res.render('user_profile'
+//    ,{
+//        user:req.user
+//    }
+    );
 }
 
 module.exports.signup=function(req,res){
+    if(req.isAuthenticated())
+    {
+        return res.redirect('/users/profile');
+    }
     return res.render('signUp');
 }
 module.exports.signin=function(req,res){
     console.log("here");
+    if(req.isAuthenticated())
+    {
+        return res.redirect('/users/profile');
+    }
     return res.render('signIn');
 }
 //sign in and create a session for user
 module.exports.createSession=function(req,res)
 {
-
+    console.log("in session");
+    return res.redirect('/');
 }
 //get the sign-up data
 module.exports.create=function(req,res)
@@ -32,7 +45,7 @@ module.exports.create=function(req,res)
     User.findOne({email:req.body.email},function(err,user){
         if(err)
         {
-            console.log(`error in finding user in signinh up`);
+            console.log(`error in finding user in signing up`);
             return;
         }
         if(!user)
@@ -56,7 +69,8 @@ module.exports.create=function(req,res)
             return res.redirect('back');
         }
     });
-
-   
-    
+}
+module.exports.destroySession=function(req,res){
+    req.logout();
+    return res.redirect('/');
 }
