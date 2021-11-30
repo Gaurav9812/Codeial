@@ -1,4 +1,5 @@
-
+const Post=require('../models/post');
+const Comment=require('../models/Comment')
 module.exports.create=function(req,res){
     Post.create({
         content:req.body.content,
@@ -12,4 +13,19 @@ module.exports.create=function(req,res){
         return res.redirect('back');
     });
 }
-const Post=require('../models/post');
+
+module.exports.destroy = function(req,res)
+{
+    Post.findById(req.params.id,function(err,post){
+        // .id ,=means object id into string
+        if(post.user == req.user.id){
+            post.remove();
+            Comment.deleteMany({post:req.params.id},function(err){
+                return res.redirect('back');
+            });
+            
+        }else{
+        return res.redirect('back');
+        }
+    })
+}

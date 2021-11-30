@@ -43,20 +43,20 @@ passport.setAuthenticatedUser=function(req,res,next){
     }
     next();
 }
-  //serializing the user to decide which key is to be kept in the cookies
+  //serializing the user to decide which key is to be kept in the session cookie 
   passport.serializeUser(function(user,done){
     done(null,user.id);
 });
 
 
-//desiarializing user
+//desiarializing user from the cookie
 passport.deserializeUser(function (id,done){
     User.findById(id,function(err,user){
         if(err){
             console.log(`error in finding user ==> passport`);
                return done(err);
             }
-        console.log("here des")
+        console.log("inside desiarializing user")
         return done(null,user);
     });
 });

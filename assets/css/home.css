@@ -1,0 +1,18 @@
+body{
+    background-color: antiquewhite;
+}
+#home-container
+{
+    display: flex;
+    
+}
+#feed-posts
+{
+    width:70%;
+}
+#user-friends
+{
+    width:30%;
+    padding: 10px;
+    border-left: 2px solid darkgray;
+}

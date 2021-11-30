@@ -1,10 +1,11 @@
+<link rel="stylesheet" href="css/home.css">
+
+
 <h1>
     <%=title%>
 </h1>
 
-
-
-
+<div id="home-container">
 <section id="feed-posts">
     <h4>Posts</h4>
     <%if(locals.user){%>
@@ -19,15 +20,20 @@
         <ul>
             
             <% for(post of posts){%>
-                <li>
-                    <p>
-                    <%= post.content%>
-                    <small>
-                        <%= post.user.name%>
-                    </small>
-                </p>
-                </li>
+               <%-include('_post') -%>
                 <%}%>
         </ul>
     </div>
 </section>
+
+<section id="user-friends">
+    <h4>
+        Friends
+    </h4>
+    <%for(u of all_users){%>
+        <p>
+            <a href="users/profile/<%=u.id%>"><%=u.name%></a>
+        </p>
+        <%}%>
+</section>
+</div>

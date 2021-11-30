@@ -6,11 +6,24 @@ module.exports.home=function(req,res)
 }
 module.exports.profile=function(req,res)
 {
-   return  res.render('user_profile'
-//    ,{
-//        user:req.user
-//    }
-    );
+    User.findById(req.params.id,function(err,user){
+        return  res.render('user_profile',{
+            title:'User profile',
+            profile_user:user
+        });
+        
+    });
+   
+}
+module.exports.update=function(req,res){
+    if(req.user.id==req.params.id){
+        User.findByIdAndUpdate(req.params.id,req.body,function(err,user){
+            return res.redirect('back');
+        });
+        
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
 }
 
 module.exports.signup=function(req,res){
@@ -51,13 +64,13 @@ module.exports.create=function(req,res)
         if(!user)
         {
             User.create({
-                email:req.body.username,
+                email:req.body.email,
                 password:req.body.password,
                 name:req.body.name
             },function(err,newUser){
                 if(err)
                 {
-                    console.log(`error creating user while signing up`);
+                    console.log(`error creating user while signing up ${err}`);
                     
                     return;
                 }

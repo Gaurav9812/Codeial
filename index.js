@@ -10,13 +10,13 @@ const passportLocal=require('./config/passport-local-strategy');
 const MongoStore=require('connect-mongo');
 const sassMiddleware=require('node-sass-middleware');
 
-app.use(sassMiddleware({
-    src:'/assets/scss',//from where to pick up SCSS file 
-    dest:'/assets/css',//from where to drop css file
-    debug:true,         //display error in console
-    outputStyle:'extended',//display in multiple lines
-    prefix:'/css'           
-}));
+// app.use(sassMiddleware({
+//     src:'/assets/scss',//from where to pick up SCSS file 
+//     dest:'/assets/css',//from where to drop css file
+//     debug:true,         //display error in console
+//     outputStyle:'extended',//display in multiple lines
+//     prefix:'/css'           
+// }));
 //static files
 app.use(express.static('./assets'));
 
@@ -25,7 +25,7 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 
 app.use(expressLayouts);
-//extract style and scropt from sub pages into the layouts
+//extract style and script from sub pages into the layouts
 app.set('layout extractStyles',true);
 app.set('layout extractScripts',true);
 
