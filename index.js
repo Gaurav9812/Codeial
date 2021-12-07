@@ -7,9 +7,17 @@ const expressLayouts=require('express-ejs-layouts');
 const session=require('express-session');
 const passport=require('passport');
 const passportLocal=require('./config/passport-local-strategy');
+const passportGoogle=require('./config/passport-google-oauth2-strategey');
+
 const MongoStore=require('connect-mongo');
 const sassMiddleware=require('node-sass-middleware');
+const flash=require('connect-flash');
+const customMiddleware=require('./config/middleware');
+const passportJWT=require('./config/passport-jwt-strategy');
 
+
+// make the upload path avaialable to browser
+app.use('/uploads',express.static(__dirname+'/uploads'));
 // app.use(sassMiddleware({
 //     src:'/assets/scss',//from where to pick up SCSS file 
 //     dest:'/assets/css',//from where to drop css file
@@ -17,7 +25,7 @@ const sassMiddleware=require('node-sass-middleware');
 //     outputStyle:'extended',//display in multiple lines
 //     prefix:'/css'           
 // }));
-//static files
+
 app.use(express.static('./assets'));
 
 app.use(express.urlencoded());
@@ -57,6 +65,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
+
+//for flash messeges
+app.use(flash());
+app.use(customMiddleware.setFlash);
 // Use express router
 app.use('/',require('./Routes/index'));
 

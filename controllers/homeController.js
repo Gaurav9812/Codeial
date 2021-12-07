@@ -1,7 +1,7 @@
 const Post =require('../models/post');
 
 const User=require('../models/user');
-module.exports.home=function(req,res)
+module.exports.home=async function(req,res)
 {
   //to access cookies
   // console.log(req.cookies);
@@ -17,28 +17,27 @@ module.exports.home=function(req,res)
   // });
   
   //populate the user of each post(means instead of id whole user will be stored)
-  Post.find({}).populate('user').populate(
+  try
+  {
+    
+  let posts=await Post.find({}).sort('-createdAt').populate('user').populate(
     {path:'comments',
     populate:{
       path:'user'
     }
-  }).exec(function(err,posts){
-    
-    if(err)
-    {
-      console.log(`error in fetching post ${err}`);
-      return;
-    }
-    User.find({},function(err,users){
-    return res.render('home',{
-      title:"Codeial Home",
-      posts: posts,
-      all_users:users
-    });
   })
+  
+   let users=await User.find({});
+  return res.render('home',{
+    title:"Codeial Home",
+    posts: posts,
+    all_users:users
   });
+  }
+  catch(err){
+    console.log('error',err);
+  }
 }
-module.exports.profile=function(req,res)
-{
-  return  res.end("<h1> Codeial progile page page</h1>");
-}
+
+//promises
+//Post.find({}).populate('comments).then(function());
